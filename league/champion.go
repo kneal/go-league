@@ -14,10 +14,10 @@ type Champion struct {
 	MaxNewPlayerLevel            int   `json:"maxNewPlayerLevel"`
 }
 
-// GetAll returns a list of all champions.
+// GetAll returns a list of rotation champions.
 //
 // https://developer.riotgames.com/apis#champion-v3
-func (svc *ChampionService) GetAll() (*Champion, *Response, error) {
+func (svc *ChampionService) GetRotations() (*Champion, *Response, error) {
 	// set the API endpoint path we send the request to
 	u := fmt.Sprintf("/lol/platform/v3/champion-rotations")
 

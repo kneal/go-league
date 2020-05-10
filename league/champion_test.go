@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func ExampleChampionService_GetAll() {
+func ExampleChampionService_GetRotations() {
 	// Set environment variables before running example
 	// export LEAGUE_URL=https://<region>.api.riotgames.com/
 	// export LEAGUE_API_KEY=<token_value>
@@ -22,7 +22,7 @@ func ExampleChampionService_GetAll() {
 	l.Authentication.SetTokenAuth(token)
 
 	// get the rotation champions
-	champions, resp, err := l.Champion.GetAll()
+	champions, resp, err := l.Champion.GetRotations()
 	if err != nil {
 		log.Fatalf("unable to get champions: %v", err)
 	}
