@@ -1,23 +1,20 @@
-package main
+package league
 
 import (
 	"fmt"
 	"log"
 	"os"
-
-	"github.com/kneal/go-league/league"
 )
 
-func main() {
-
-	// Set environment variables in your terminal before running example
-	// export LEAGUE_URL=https://<region>.api.riotgames.com/lol/platform/v3/champion-rotations
+func ExampleChampionService_GetAll() {
+	// Set environment variables before running example
+	// export LEAGUE_URL=https://<region>.api.riotgames.com/
 	// export LEAGUE_API_KEY=<token_value>
 	url := os.Getenv("LEAGUE_URL")
 	token := os.Getenv("LEAGUE_API_KEY")
 
 	// Setup league client with token authentication
-	l, err := league.NewClient(url, nil)
+	l, err := NewClient(url, nil)
 	if err != nil {
 		log.Fatal("unable to create client")
 	}
@@ -27,7 +24,7 @@ func main() {
 	// get the rotation champions
 	champions, resp, err := l.Champion.GetAll()
 	if err != nil {
-		log.Fatal("unable to get champions %s: %w", err)
+		log.Fatalf("unable to get champions: %v", err)
 	}
 	log.Printf("Received response code %d", resp.StatusCode)
 

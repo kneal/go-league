@@ -1,5 +1,7 @@
 # go-league
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/kneal/go-league)](https://goreportcard.com/report/github.com/kneal/go-league)
+
 Go client library for [League of Legends (LOL) API](https://developer.riotgames.com/apis)
 
 ## Documentation
@@ -15,11 +17,11 @@ Construct a new League client, then use the various services on the client to ac
 ```go
 client, _ := league.NewClient("league.url.com", nil)
 
-// list all champions
-champions, _, err := client.Champion.List()
+// list champion rotations, including free-to-play and low-level free-to-play rotations
+champions, _, err := client.Champion.GetAll()
 ```
 
-_For full examples see the files in the [example](example/) directory_
+_For more [examples]() see [Go doc](https://pkg.go.dev)_
 
 ### Authentication
 
