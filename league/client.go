@@ -32,6 +32,7 @@ type Client struct {
 	// LOL service for authentication.
 	Authentication *AuthenticationService
 	Champion       *ChampionService
+	Summoner       *SummonerService
 }
 
 type service struct {
@@ -68,6 +69,7 @@ func NewClient(baseURL string, httpClient *http.Client) (*Client, error) {
 	// instantiate all client services
 	c.Authentication = &AuthenticationService{client: c}
 	c.Champion = &ChampionService{client: c}
+	c.Summoner = &SummonerService{client: c}
 
 	return c, nil
 }

@@ -7,11 +7,11 @@ import (
 // ChampionService handles manging champions.
 type ChampionService service
 
-// Champion stores champion rotations, including free-to-play and low-level free-to-play rotations
+// Champion represents champion rotations, including free-to-play and low-level free-to-play rotations
 type Champion struct {
-		FreeChampionIDs              []int `json:"freeChampionIds"`
-		FreeChampionIDsForNewPlayers []int `json:"freeChampionIdsForNewPlayers"`
-		MaxNewPlayerLevel            int   `json:"maxNewPlayerLevel"`
+	FreeChampionIDs              []int `json:"freeChampionIds"`
+	FreeChampionIDsForNewPlayers []int `json:"freeChampionIdsForNewPlayers"`
+	MaxNewPlayerLevel            int   `json:"maxNewPlayerLevel"`
 }
 
 // GetAll returns a list of all champions.
