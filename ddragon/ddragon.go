@@ -1,4 +1,4 @@
-package league
+package ddragon
 
 import (
 	"bytes"
@@ -8,14 +8,12 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"reflect"
 	"strings"
-
-	"github.com/google/go-querystring/query"
 )
 
 const (
-	userAgent = "go-league"
+	userAgent = "go-ddragon"
+	URL       = "https://ddragon.leagueoflegends.com/"
 )
 
 // Client is a client that manages communication with the LOL API.
@@ -29,10 +27,8 @@ type Client struct {
 	// User agent used when communicating with the LOL API.
 	UserAgent string
 
-	// LOL service for authentication.
-	Authentication *AuthenticationService
-	Champion       *ChampionService
-	Summoner       *SummonerService
+	// ddragon services
+	Champion *ChampionService
 }
 
 type service struct {
@@ -42,16 +38,24 @@ type service struct {
 // NewClient returns a new LOL API client.
 // baseURL has to be the HTTP endpoint of the LOL API.
 // If no httpClient is provided, then the http.DefaultClient will be used.
-func NewClient(baseURL string, httpClient *http.Client) (*Client, error) {
+func NewClient(version, language string, httpClient *http.Client) (*Client, error) {
 	// use http.DefaultClient if no client is provided
 	if httpClient == nil {
 		httpClient = http.DefaultClient
 	}
 
-	// we must have a url provided to create the client
-	if len(baseURL) == 0 {
-		return nil, fmt.Errorf("No LOL baseURL provided")
+	// we must have a version provided to create the client
+	if len(version) == 0 {
+		return nil, fmt.Errorf("No data dragon version provided")
 	}
+
+	// we must have a language provided to create the client
+	if len(language) == 0 {
+		return nil, fmt.Errorf("No data dragon language provided")
+	}
+
+	// create baseURL for client
+	baseURL := fmt.Sprintf("%s/cdn/%s/data/%s/", URL, version, language)
 
 	// parse url provided for the client
 	url, err := url.Parse(baseURL)
@@ -67,9 +71,7 @@ func NewClient(baseURL string, httpClient *http.Client) (*Client, error) {
 	}
 
 	// instantiate all client services
-	c.Authentication = &AuthenticationService{client: c}
 	c.Champion = &ChampionService{client: c}
-	c.Summoner = &SummonerService{client: c}
 
 	return c, nil
 }
@@ -100,40 +102,6 @@ func (c *Client) buildURLForRequest(urlStr string) (string, error) {
 	return u, nil
 }
 
-// addAuthentication adds the necessary authentication to the request.
-func (c *Client) addAuthentication(req *http.Request) {
-	// Apply Token Authentication.
-	if c.Authentication.HasTokenAuth() {
-		req.Header.Add("X-Riot-Token", fmt.Sprintf("%s", *c.Authentication.secret))
-	}
-}
-
-// addOptions adds the parameters in opt as url query parameters to s.
-// opt must be a struct whose fields may contain "url" tags.
-func addOptions(s string, opt interface{}) (string, error) {
-	// return url if option is a pointer but is also nil
-	v := reflect.ValueOf(opt)
-	if v.Kind() == reflect.Ptr && v.IsNil() {
-		return s, nil
-	}
-
-	// parse url provided for the options
-	u, err := url.Parse(s)
-	if err != nil {
-		return s, err
-	}
-
-	// add query values to url
-	qs, err := query.Values(opt)
-	if err != nil {
-		return s, err
-	}
-
-	// safely encode url with query values
-	u.RawQuery = qs.Encode()
-	return u.String(), nil
-}
-
 // NewRequest creates an API request.
 // A relative URL can be provided in urlStr,
 // in which case it is resolved relative to the baseURL of the Client.
@@ -162,11 +130,6 @@ func (c *Client) NewRequest(method, urlStr string, body interface{}) (*http.Requ
 	req, err := http.NewRequest(method, u, buf)
 	if err != nil {
 		return nil, err
-	}
-
-	// apply authentication to request if client is set
-	if c.Authentication.HasAuth() {
-		c.addAuthentication(req)
 	}
 
 	// apply default header for request
@@ -267,27 +230,3 @@ func CheckResponse(r *http.Response) error {
 
 	return fmt.Errorf("API call to %s failed: %s", r.Request.URL.String(), r.Status)
 }
-
-// Bool is a helper routine that allocates a new boolean
-// value to store v and returns a pointer to it.
-func Bool(v bool) *bool { return &v }
-
-// Bytes is a helper routine that allocates a new byte
-// array value to store v and returns a pointer to it.
-func Bytes(v []byte) *[]byte { return &v }
-
-// Int is a helper routine that allocates a new integer
-// value to store v and returns a pointer to it.
-func Int(v int) *int { return &v }
-
-// Int64 is a helper routine that allocates a new 64 bit
-// integer value to store v and returns a pointer to it.
-func Int64(v int64) *int64 { return &v }
-
-// String is a helper routine that allocates a new string
-// value to store v and returns a pointer to it.
-func String(v string) *string { return &v }
-
-// Strings is a helper routine that allocates a new string
-// array value to store v and returns a pointer to it.
-func Strings(v []string) *[]string { return &v }

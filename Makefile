@@ -4,5 +4,5 @@ clean:
 	#################################
 
 	@go mod tidy
-	@go vet ./league
-	@go fmt ./league
+	@go vet ./...
+	@go fmt ./...
