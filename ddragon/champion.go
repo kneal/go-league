@@ -153,6 +153,22 @@ type (
 	}
 )
 
+// GetAll returns a list of all champions.
+//
+// https://developer.riotgames.com/docs/lol#data-dragon_champions
+func (svc *ChampionService) GetAll(name string) (*ChampionResponse, *Response, error) {
+	// set the API endpoint path we send the request to
+	u := fmt.Sprintf("/champion.json", name)
+
+	// slice Champion type we want to return
+	v := new(ChampionResponse)
+
+	// send request using client
+	resp, err := svc.client.Call("GET", u, nil, v)
+
+	return v, resp, err
+}
+
 // Get returns a champion.
 //
 // https://developer.riotgames.com/docs/lol#data-dragon_champions
