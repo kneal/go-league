@@ -13,7 +13,7 @@ import (
 
 const (
 	userAgent = "go-ddragon"
-	URL       = "https://ddragon.leagueoflegends.com/"
+	URL       = "https://ddragon.leagueoflegends.com"
 )
 
 // Client is a client that manages communication with the LOL API.
