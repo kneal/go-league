@@ -33,6 +33,7 @@ type Client struct {
 	Authentication *AuthenticationService
 	Champion       *ChampionService
 	Summoner       *SummonerService
+	Match          *MatchService
 }
 
 type service struct {
@@ -70,6 +71,7 @@ func NewClient(baseURL string, httpClient *http.Client) (*Client, error) {
 	c.Authentication = &AuthenticationService{client: c}
 	c.Champion = &ChampionService{client: c}
 	c.Summoner = &SummonerService{client: c}
+	c.Match = &MatchService{client: c}
 
 	return c, nil
 }

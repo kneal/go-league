@@ -14,7 +14,7 @@ type Champion struct {
 	MaxNewPlayerLevel            int   `json:"maxNewPlayerLevel"`
 }
 
-// GetAll returns a list of rotation champions.
+// GetRotations returns a list of rotation champions.
 //
 // https://developer.riotgames.com/apis#champion-v3
 func (svc *ChampionService) GetRotations() (*Champion, *Response, error) {
