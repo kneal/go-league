@@ -5,16 +5,18 @@ import (
 )
 
 // ChampionService handles manging champions.
-type ChampionService service
+type (
+	ChampionService service
 
-// Champion represents champion rotations, including free-to-play and low-level free-to-play rotations
-type Champion struct {
-	FreeChampionIDs              []int `json:"freeChampionIds"`
-	FreeChampionIDsForNewPlayers []int `json:"freeChampionIdsForNewPlayers"`
-	MaxNewPlayerLevel            int   `json:"maxNewPlayerLevel"`
-}
+	// Champion represents champion rotations, including free-to-play and low-level free-to-play rotations
+	Champion struct {
+		FreeChampionIDs              []int `json:"freeChampionIds"`
+		FreeChampionIDsForNewPlayers []int `json:"freeChampionIdsForNewPlayers"`
+		MaxNewPlayerLevel            int   `json:"maxNewPlayerLevel"`
+	}
+)
 
-// GetAll returns a list of rotation champions.
+// GetRotations returns a list of rotation champions.
 //
 // https://developer.riotgames.com/apis#champion-v3
 func (svc *ChampionService) GetRotations() (*Champion, *Response, error) {

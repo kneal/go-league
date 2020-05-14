@@ -19,25 +19,28 @@ const (
 )
 
 // Client is a client that manages communication with the LOL API.
-type Client struct {
-	// HTTP client used to communicate with the LOL API.
-	client *http.Client
+type (
+	Client struct {
+		// HTTP client used to communicate with the LOL API.
+		client *http.Client
 
-	// Base URL for LOL API requests.
-	baseURL *url.URL
+		// Base URL for LOL API requests.
+		baseURL *url.URL
 
-	// User agent used when communicating with the LOL API.
-	UserAgent string
+		// User agent used when communicating with the LOL API.
+		UserAgent string
 
-	// LOL service for authentication.
-	Authentication *AuthenticationService
-	Champion       *ChampionService
-	Summoner       *SummonerService
-}
+		// LOL service for authentication.
+		Authentication *AuthenticationService
+		Champion       *ChampionService
+		Summoner       *SummonerService
+		Match          *MatchService
+	}
 
-type service struct {
-	client *Client
-}
+	service struct {
+		client *Client
+	}
+)
 
 // NewClient returns a new LOL API client.
 // baseURL has to be the HTTP endpoint of the LOL API.
@@ -70,6 +73,7 @@ func NewClient(baseURL string, httpClient *http.Client) (*Client, error) {
 	c.Authentication = &AuthenticationService{client: c}
 	c.Champion = &ChampionService{client: c}
 	c.Summoner = &SummonerService{client: c}
+	c.Match = &MatchService{client: c}
 
 	return c, nil
 }

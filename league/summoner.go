@@ -5,18 +5,20 @@ import (
 )
 
 // SummonerService handles manging Summoners.
-type SummonerService service
+type (
+	SummonerService service
 
-// Summoner represents Summoner rotations, including free-to-play and low-level free-to-play rotations
-type Summoner struct {
-	ID            string `json:"id"`
-	AccountID     string `json:"accountId"`
-	Puuid         string `json:"puuid"`
-	Name          string `json:"name"`
-	ProfileIconID int    `json:"profileIconId"`
-	RevisionDate  int64  `json:"revisionDate"`
-	SummonerLevel int    `json:"summonerLevel"`
-}
+	// Summoner represents Summoner rotations, including free-to-play and low-level free-to-play rotations
+	Summoner struct {
+		ID            string `json:"id"`
+		AccountID     string `json:"accountId"`
+		Puuid         string `json:"puuid"`
+		Name          string `json:"name"`
+		ProfileIconID int    `json:"profileIconId"`
+		RevisionDate  int64  `json:"revisionDate"`
+		SummonerLevel int    `json:"summonerLevel"`
+	}
+)
 
 // GetByEncryptedAccountID returns a summoner.
 //
